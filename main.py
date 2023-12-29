@@ -19,4 +19,5 @@ if __name__ == '__main__':
         screen.blit(picture1, (155, 50))
         screen.blit(picture2, (413, 55))
         pygame.display.flip()
+
     pygame.quit()
