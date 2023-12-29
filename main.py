@@ -65,6 +65,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(size)
     screen.fill((150, 100, 0))
     running = True
+    numbers = []
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -90,13 +91,26 @@ if __name__ == '__main__':
                         fi = pygame.font.Font(None, 48)
                         text = fi.render(str(i), True, pygame.Color((0, 0, 0)))
                         numbers.append(text)
-                    print(numbers[0])
-                    screen.blit(numbers[0], (380, 60))
-        picture1 = pygame.image.load("data/pole_one.png")
-        picture2 = pygame.image.load("data/pole_two.png")
-        roll_the_dice = pygame.image.load("data/brosok.png")
-        screen.blit(roll_the_dice, (750, 500))
-        screen.blit(picture1, (155, 50))
-        screen.blit(picture2, (413, 55))
-        pygame.display.flip()
+            picture1 = pygame.image.load("data/pole_one.png")
+            picture2 = pygame.image.load("data/pole_two.png")
+            roll_the_dice = pygame.image.load("data/brosok.png")
+            screen.blit(roll_the_dice, (750, 500))
+            screen.blit(picture1, (155, 50))
+            screen.blit(picture2, (413, 55))
+            if numbers:
+                screen.blit(numbers[0], (370, 60))
+                screen.blit(numbers[1], (370, 110))
+                screen.blit(numbers[2], (370, 150))
+                screen.blit(numbers[3], (370, 200))
+                screen.blit(numbers[4], (370, 240))
+                screen.blit(numbers[5], (370, 285))
+                screen.blit(numbers[6], (630, 60))
+                screen.blit(numbers[7], (630, 110))
+                screen.blit(numbers[8], (630, 150))
+                screen.blit(numbers[9], (630, 200))
+                screen.blit(numbers[10], (630, 240))
+                screen.blit(numbers[11], (630, 285))
+                screen.blit(numbers[12], (630, 320))
+            pygame.display.update()
+            pygame.display.flip()
     pygame.quit()
