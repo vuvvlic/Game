@@ -1,10 +1,10 @@
 import pygame
 
-
 if __name__ == '__main__':
     pygame.init()
     size = width, height = 900, 700
     screen = pygame.display.set_mode(size)
+    screen.fill((150, 100, 0))
     running = True
     while running:
         for event in pygame.event.get():
