@@ -6,6 +6,44 @@ cubes = [(1, "number/1.png"), (2, "number/2.png"), (3, "number/3.png"), (4, "num
          (6, "number/6.png")]
 
 
+def poker(llist):
+    num_1 = llist.count(1) * 1
+    num_2 = llist.count(2) * 2
+    num_3 = llist.count(3) * 3
+    num_4 = llist.count(4) * 4
+    num_5 = llist.count(5) * 5
+    num_6 = llist.count(6) * 6
+    if len(set(llist[:])) == 1:
+        yahta = 50
+    else:
+        yahta = 0
+    if len(set(llist[:])) == 2:
+        if llist.count(llist[0]) in [2, 3]:
+            full_house = 25
+            kare = 0
+        else:
+            kare = 23
+            full_house = 0
+    else:
+        full_house = 0
+        kare = 0
+    if len(set(llist[:])) == 3:
+        three = 21
+    else:
+        three = 0
+    if len(set(llist[:])) == 4:
+        low_street = 30
+    else:
+        low_street = 0
+    if len(set(llist[:])) == 5:
+        big_street = 40
+    else:
+        big_street = 0
+    list__ = [num_1, num_2, num_3, num_4, num_5, num_6, three, kare, full_house, low_street, big_street, yahta,
+              sum(llist)]
+    return list__
+
+
 class ChekingTheCoordinates:
     def __init__(self, x, y):
         self.x = x
@@ -46,6 +84,14 @@ if __name__ == '__main__':
                     screen.blit(pic_cub_3, (305, 503))
                     screen.blit(pic_cub_4, (455, 503))
                     screen.blit(pic_cub_5, (605, 503))
+                    _list = poker([kubs[0][0], kubs[1][0], kubs[2][0], kubs[3][0], kubs[4][0]])
+                    numbers = []
+                    for i in _list:
+                        fi = pygame.font.Font(None, 48)
+                        text = fi.render(str(i), True, pygame.Color((0, 0, 0)))
+                        numbers.append(text)
+                    print(numbers[0])
+                    screen.blit(numbers[0], (380, 60))
         picture1 = pygame.image.load("data/pole_one.png")
         picture2 = pygame.image.load("data/pole_two.png")
         roll_the_dice = pygame.image.load("data/brosok.png")
