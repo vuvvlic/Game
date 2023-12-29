@@ -21,7 +21,6 @@ class ChekingTheCoordinates:
             return self.kubiki
 
 
-
 if __name__ == '__main__':
     pygame.init()
     size = width, height = 900, 700
