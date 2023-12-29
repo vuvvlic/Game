@@ -35,7 +35,17 @@ if __name__ == '__main__':
                 play = ChekingTheCoordinates(event.pos[0], event.pos[1])
                 kubs = play.check()
                 if type(kubs).__name__ == 'list':
-                    pass
+                    screen.fill((150, 100, 0))
+                    pic_cub_1 = pygame.image.load(kubs[0][1])
+                    pic_cub_2 = pygame.image.load(kubs[1][1])
+                    pic_cub_3 = pygame.image.load(kubs[2][1])
+                    pic_cub_4 = pygame.image.load(kubs[3][1])
+                    pic_cub_5 = pygame.image.load(kubs[4][1])
+                    screen.blit(pic_cub_1, (5, 503))
+                    screen.blit(pic_cub_2, (155, 503))
+                    screen.blit(pic_cub_3, (305, 503))
+                    screen.blit(pic_cub_4, (455, 503))
+                    screen.blit(pic_cub_5, (605, 503))
         picture1 = pygame.image.load("data/pole_one.png")
         picture2 = pygame.image.load("data/pole_two.png")
         roll_the_dice = pygame.image.load("data/brosok.png")
