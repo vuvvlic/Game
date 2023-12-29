@@ -59,7 +59,7 @@ class ChekingTheCoordinates:
             return self.kubiki
 
 
-if __name__ == '__main__':
+def playing_vuvvlic():
     pygame.init()
     size = width, height = 900, 700
     screen = pygame.display.set_mode(size)
