@@ -110,7 +110,7 @@ def playing_vuvvlic():
                 screen.blit(numbers[9], (630, 200))
                 screen.blit(numbers[10], (630, 240))
                 screen.blit(numbers[11], (630, 285))
-                screen.blit(numbers[12], (630, 320))
+                screen.blit(numbers[12], (630, 325))
             pygame.display.update()
             pygame.display.flip()
     pygame.quit()
