@@ -14,7 +14,8 @@ if __name__ == '__main__':
                 print(event.pos)
         picture1 = pygame.image.load("data/pole_one.png")
         picture2 = pygame.image.load("data/pole_two.png")
-
+        roll_the_dice = pygame.image.load("data/brosok.png")
+        screen.blit(roll_the_dice, (750, 500))
         screen.blit(picture1, (155, 50))
         screen.blit(picture2, (413, 55))
         pygame.display.flip()
