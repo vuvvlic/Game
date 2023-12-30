@@ -5,6 +5,9 @@ import pygame
 cubes = [(1, "number/1.png"), (2, "number/2.png"), (3, "number/3.png"), (4, "number/4.png"), (5, "number/5.png"),
          (6, "number/6.png")]
 
+lock_cubes = [(1, "number/1lock.png"), (2, "number/2lock.png"), (3, "number/3lock.png"), (4, "number/4lock.png"),
+              (5, "number/5lock.png"), (6, "number/6lock.png")]
+
 
 def poker(llist):
     num_1 = llist.count(1) * 1
@@ -45,17 +48,49 @@ def poker(llist):
 
 
 class ChekingTheCoordinates:
+    last_cubes = None
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.kubiki = []
 
     def random_cub(self):
-        self.kubiki = choices(cubes, k=5)
+        if ChekingTheCoordinates.last_cubes is None:  # если ещё нету сохранённых кубиков
+            for _ in range(5):
+                self.kubiki.extend(choices(cubes))
+            ChekingTheCoordinates.last_cubes = self.kubiki
+        else:  # если уже есть сгенерированные кубики
+            for cube in range(len(ChekingTheCoordinates.last_cubes)):
+                if not 'lock' in ChekingTheCoordinates.last_cubes[cube][1]:
+                    ChekingTheCoordinates.last_cubes[cube] = choices(cubes)[0]
+            self.kubiki = ChekingTheCoordinates.last_cubes
+
+    def locks_cube(self, cube):
+        if 'lock' in ChekingTheCoordinates.last_cubes[cube][1]:
+            ChekingTheCoordinates.last_cubes[cube] = cubes[ChekingTheCoordinates.last_cubes[cube][0] - 1]
+        else:
+            ChekingTheCoordinates.last_cubes[cube] = lock_cubes[ChekingTheCoordinates.last_cubes[cube][0] - 1]
+        self.kubiki = ChekingTheCoordinates.last_cubes
 
     def check(self):
         if self.x in range(753, 878) and self.y in range(503, 631):
             self.random_cub()
+            return self.kubiki
+        elif self.x in range(5, 145) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
+            self.locks_cube(0)
+            return self.kubiki
+        elif self.x in range(155, 295) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
+            self.locks_cube(1)
+            return self.kubiki
+        elif self.x in range(305, 445) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
+            self.locks_cube(2)
+            return self.kubiki
+        elif self.x in range(455, 595) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
+            self.locks_cube(3)
+            return self.kubiki
+        elif self.x in range(605, 740) and self.y in range(503, 643) and ChekingTheCoordinates.last_cubes is not None:
+            self.locks_cube(4)
             return self.kubiki
 
 
