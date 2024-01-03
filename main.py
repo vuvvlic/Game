@@ -10,6 +10,8 @@ lock_cubes = [(1, "number/1lock.png"), (2, "number/2lock.png"), (3, "number/3loc
 
 playing_numbers = []
 
+hod_play = 0
+
 numbers_sl = {
     1: '',
     2: '',
@@ -23,6 +25,7 @@ numbers_sl = {
     10: '',
     12: '',
     13: '',
+    11: ''
 }
 
 flag_1 = True
@@ -181,8 +184,38 @@ class ChekingTheCoordinates:
 
 
 def playing_vuvvlic():
-    global playing_numbers
+    global playing_numbers, numbers_sl, flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta
+    global hod_play, flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6
+    flag_1 = True
+    flag_2 = True
+    flag_3 = True
+    flag_4 = True
+    flag_5 = True
+    flag_6 = True
+    flag_set = True
+    flag_kare = True
+    flag_full_house = True
+    flag_low_street = True
+    flag_big_street = True
+    flag_yahta = True
+    flag_shans = True
+    numbers_sl = {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: '',
+        9: '',
+        10: '',
+        12: '',
+        13: '',
+        11: ''
+    }
     total = 0
+    hod_play = 0
     pygame.init()
     size = width, height = 900, 700
     screen = pygame.display.set_mode(size)
@@ -216,8 +249,11 @@ def playing_vuvvlic():
                         text = fi.render(str(i), True, pygame.Color((0, 0, 0)))
                         numbers.append(text)
                 elif kubs is not None:
+                    hod_play += 1
                     numbers_sl[kubs[1]] = kubs[0]
                     total += kubs[0]  # сумируется счет
+                    if hod_play == 13:
+                        return total
                     screen.fill((150, 100, 0))
                     izob = pygame.font.Font(None, 48)
                     text__ = izob.render('Счёт:', True, pygame.Color((0, 0, 0)))  # изображение счета

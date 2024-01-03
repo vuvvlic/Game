@@ -1,4 +1,4 @@
-from main import playing_vuvvlic
+from menu import start_window
 
 if __name__ == '__main__':
-    playing_vuvvlic()
+    start_window()
