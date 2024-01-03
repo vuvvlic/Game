@@ -41,6 +41,7 @@ flag_low_street = True
 flag_big_street = True
 flag_yahta = True
 flag_shans = True
+current_point = None
 
 
 def poker(llist):
@@ -107,6 +108,36 @@ class ChekingTheCoordinates:
             ChekingTheCoordinates.last_cubes[cube] = lock_cubes[ChekingTheCoordinates.last_cubes[cube][0] - 1]
         self.kubiki = ChekingTheCoordinates.last_cubes
 
+    def check_flag(self):
+        global flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta
+        global flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6
+        if flag_1 != 'yellow':
+            flag_1 = True
+        if flag_2 != 'yellow':
+            flag_2 = True
+        if flag_3 != 'yellow':
+            flag_3 = True
+        if flag_4 != 'yellow':
+            flag_4 = True
+        if flag_5 != 'yellow':
+            flag_5 = True
+        if flag_6 != 'yellow':
+            flag_6 = True
+        if flag_set != 'yellow':
+            flag_set = True
+        if flag_kare != 'yellow':
+            flag_kare = True
+        if flag_full_house != 'yellow':
+            flag_full_house = True
+        if flag_low_street != 'yellow':
+            flag_low_street = True
+        if flag_big_street != 'yellow':
+            flag_big_street = True
+        if flag_yahta != 'yellow':
+            flag_yahta = True
+        if flag_shans != 'yellow':
+            flag_shans = True
+
     def check(self):
         global playing_numbers
         global flag_1
@@ -122,10 +153,16 @@ class ChekingTheCoordinates:
         global flag_low_street
         global flag_yahta
         global flag_shans
-
+        global count_move
+        global current_point
         if self.x in range(753, 878) and self.y in range(503, 631):
-            self.random_cub()
-            return self.kubiki
+            count_move -= 1
+            if count_move >= 0:
+                self.random_cub()
+                return self.kubiki
+        elif self.x in range(730, 890) and self.y in range(400, 482) and current_point:
+            count_move = 3
+            return 'play'
         elif self.x in range(5, 145) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
             self.locks_cube(0)
             return self.kubiki
@@ -141,51 +178,90 @@ class ChekingTheCoordinates:
         elif self.x in range(605, 740) and self.y in range(503, 643) and ChekingTheCoordinates.last_cubes is not None:
             self.locks_cube(4)
             return self.kubiki
-        elif self.x in range(367, 411) and self.y in range(53, 95) and flag_1 and playing_numbers:
-            flag_1 = False
-            return (playing_numbers[0], 1)
-        elif self.x in range(367, 411) and self.y in range(97, 140) and flag_2 and playing_numbers:
-            flag_2 = False
-            return (playing_numbers[1], 2)
-        elif self.x in range(367, 411) and self.y in range(139, 185) and flag_3 and playing_numbers:
-            flag_3 = False
-            return (playing_numbers[2], 3)
-        elif self.x in range(367, 411) and self.y in range(185, 230) and flag_4 and playing_numbers:
-            flag_4 = False
-            return (playing_numbers[3], 4)
-        elif self.x in range(367, 411) and self.y in range(230, 275) and flag_5 and playing_numbers:
-            flag_5 = False
-            return (playing_numbers[4], 5)
-        elif self.x in range(367, 411) and self.y in range(275, 320) and flag_6 and playing_numbers:
-            flag_6 = False
-            return (playing_numbers[5], 6)
-        elif self.x in range(625, 665) and self.y in range(53, 95) and flag_set and playing_numbers:
-            flag_set = False
-            return (playing_numbers[6], 7)
-        elif self.x in range(625, 665) and self.y in range(97, 139) and flag_kare and playing_numbers:
-            flag_kare = False
-            return (playing_numbers[7], 8)
-        elif self.x in range(625, 665) and self.y in range(140, 185) and flag_full_house and playing_numbers:
-            flag_full_house = False
-            return (playing_numbers[8], 9)
-        elif self.x in range(625, 665) and self.y in range(185, 230) and flag_low_street and playing_numbers:
-            flag_low_street = False
-            return (playing_numbers[9], 10)
-        elif self.x in range(625, 665) and self.y in range(230, 275) and flag_big_street and playing_numbers:
-            flag_big_street = False
-            return (playing_numbers[10], 11)
-        elif self.x in range(625, 665) and self.y in range(275, 320) and flag_yahta and playing_numbers:
-            flag_yahta = False
-            return (playing_numbers[11], 12)
-        elif self.x in range(625, 665) and self.y in range(320, 365) and flag_shans and playing_numbers:
-            flag_shans = False
-            return (playing_numbers[12], 13)
+        elif (self.x in range(367, 411) and self.y in range(53, 95) and flag_1 and playing_numbers
+              and flag_1 != 'yellow'):
+            current_point = [playing_numbers[0], 1]
+            self.check_flag()
+            flag_1 = 'red'
+            return 'select'
+        elif (self.x in range(367, 411) and self.y in range(97, 140) and flag_2 and playing_numbers
+              and flag_2 != 'yellow'):
+            current_point = [playing_numbers[1], 2]
+            self.check_flag()
+            flag_2 = 'red'
+            return 'select'
+        elif (self.x in range(367, 411) and self.y in range(139, 185) and flag_3 and playing_numbers
+              and flag_3 != 'yellow'):
+            current_point = [playing_numbers[2], 3]
+            self.check_flag()
+            flag_3 = 'red'
+            return 'select'
+        elif (self.x in range(367, 411) and self.y in range(185, 230) and flag_4 and playing_numbers
+              and flag_4 != 'yellow'):
+            current_point = [playing_numbers[3], 4]
+            self.check_flag()
+            flag_4 = 'red'
+            return 'select'
+        elif (self.x in range(367, 411) and self.y in range(230, 275) and flag_5 and playing_numbers
+              and flag_5 != 'yellow'):
+            current_point = [playing_numbers[4], 5]
+            self.check_flag()
+            flag_5 = 'red'
+            return 'select'
+        elif (self.x in range(367, 411) and self.y in range(275, 320) and flag_6 and playing_numbers
+              and flag_6 != 'yellow'):
+            current_point = [playing_numbers[5], 6]
+            self.check_flag()
+            flag_6 = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(53, 95) and flag_set and playing_numbers
+              and flag_set != 'yellow'):
+            current_point = [playing_numbers[6], 7]
+            self.check_flag()
+            flag_set = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(97, 139) and flag_kare and playing_numbers
+              and flag_kare != 'yellow'):
+            current_point = [playing_numbers[7], 8]
+            self.check_flag()
+            flag_kare = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(140, 185) and flag_full_house and playing_numbers
+              and flag_full_house != 'yellow'):
+            current_point = [playing_numbers[8], 9]
+            self.check_flag()
+            flag_full_house = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(185, 230) and flag_low_street and playing_numbers
+              and flag_low_street != 'yellow'):
+            current_point = [playing_numbers[9], 10]
+            self.check_flag()
+            flag_low_street = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(230, 275) and flag_big_street and playing_numbers
+              and flag_big_street != 'yellow'):
+            current_point = [playing_numbers[10], 11]
+            self.check_flag()
+            flag_big_street = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(275, 320) and flag_yahta and playing_numbers
+              and flag_yahta != 'yellow'):
+            current_point = [playing_numbers[11], 12]
+            self.check_flag()
+            flag_yahta = 'red'
+            return 'select'
+        elif (self.x in range(625, 665) and self.y in range(320, 365) and flag_shans and playing_numbers
+              and flag_shans != 'yellow'):
+            current_point = [playing_numbers[12], 13]
+            self.check_flag()
+            flag_shans = 'red'
+            return 'select'
         return None
 
 
 def playing_vuvvlic():
     global playing_numbers, numbers_sl, flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta
-    global hod_play, flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6
+    global hod_play, flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6, count_move, current_point
     flag_1 = True
     flag_2 = True
     flag_3 = True
@@ -199,6 +275,8 @@ def playing_vuvvlic():
     flag_big_street = True
     flag_yahta = True
     flag_shans = True
+    count_move = 3
+    end_move = False
     numbers_sl = {
         1: '',
         2: '',
@@ -230,6 +308,9 @@ def playing_vuvvlic():
                 play = ChekingTheCoordinates(event.pos[0], event.pos[1])
                 kubs = play.check()
                 if type(kubs).__name__ == 'list':
+                    end_move = False
+                    current_point = None
+                    play.check_flag()
                     screen.fill((150, 100, 0))
                     pic_cub_1 = pygame.image.load(kubs[0][1])
                     pic_cub_2 = pygame.image.load(kubs[1][1])
@@ -248,10 +329,39 @@ def playing_vuvvlic():
                         fi = pygame.font.Font(None, 48)
                         text = fi.render(str(i), True, pygame.Color((0, 0, 0)))
                         numbers.append(text)
-                elif kubs is not None:
+                elif kubs == 'play':
+                    ChekingTheCoordinates.last_cubes = None
+                    if current_point[1] == 1:
+                        flag_1 = 'yellow'
+                    elif current_point[1] == 2:
+                        flag_2 = 'yellow'
+                    elif current_point[1] == 3:
+                        flag_3 = 'yellow'
+                    elif current_point[1] == 4:
+                        flag_4 = 'yellow'
+                    elif current_point[1] == 5:
+                        flag_5 = 'yellow'
+                    elif current_point[1] == 6:
+                        flag_6 = 'yellow'
+                    elif current_point[1] == 7:
+                        flag_set = 'yellow'
+                    elif current_point[1] == 8:
+                        flag_kare = 'yellow'
+                    elif current_point[1] == 9:
+                        flag_full_house = 'yellow'
+                    elif current_point[1] == 10:
+                        flag_low_street = 'yellow'
+                    elif current_point[1] == 11:
+                        flag_big_street = 'yellow'
+                    elif current_point[1] == 12:
+                        flag_yahta = 'yellow'
+                    elif current_point[1] == 13:
+                        flag_shans = 'yellow'
+                    total += current_point[0]
+                    current_point = None
+                    playing_numbers = []
                     hod_play += 1
-                    numbers_sl[kubs[1]] = kubs[0]
-                    total += kubs[0]  # сумируется счет
+                    end_move = True
                     if hod_play == 13:
                         return total
                     screen.fill((150, 100, 0))
@@ -261,10 +371,11 @@ def playing_vuvvlic():
                     izob1 = pygame.font.Font(None, 48)
                     text__1 = izob1.render(f'{total}', True, pygame.Color((0, 0, 0)))  # изображение счета цифра
                     screen.blit(text__1, (810, 80))
+                elif kubs == 'select':
+                    numbers_sl[current_point[1]] = current_point[0]
 
             picture1 = pygame.image.load("data/pole_one.png")
             picture2 = pygame.image.load("data/pole_two.png")
-            roll_the_dice = pygame.image.load("data/brosok.png")
             # делаю повторно потому что чтоб счет изображения сохранялся
             izob = pygame.font.Font(None, 48)
             text__ = izob.render('Счёт:', True, pygame.Color((0, 0, 0)))
@@ -272,88 +383,132 @@ def playing_vuvvlic():
             izob1 = pygame.font.Font(None, 48)
             text__1 = izob1.render(f'{total}', True, pygame.Color((0, 0, 0)))
             screen.blit(text__1, (810, 80))
-            screen.blit(roll_the_dice, (750, 500))
+            if current_point is None:
+                play_button = pygame.image.load("data/lockplay.png")
+                screen.blit(play_button, (730, 400))
+            else:
+                play_button = pygame.image.load("data/play.png")
+                screen.blit(play_button, (730, 400))
+            if count_move == 3:
+                roll_the_dice = pygame.image.load("data/brosok1.png")
+                screen.blit(roll_the_dice, (750, 500))
+            elif count_move == 2:
+                roll_the_dice = pygame.image.load("data/brosok2.png")
+                screen.blit(roll_the_dice, (750, 500))
+            elif count_move == 1:
+                roll_the_dice = pygame.image.load("data/brosok3.png")
+                screen.blit(roll_the_dice, (750, 500))
+            elif count_move <= 0:
+                roll_the_dice = pygame.image.load("data/brosok4.png")
+                screen.blit(roll_the_dice, (750, 500))
             screen.blit(picture1, (155, 50))
             screen.blit(picture2, (413, 55))
+            s_pic_red = pygame.font.Font(None, 48)
             if numbers:
-                if flag_1:
-                    screen.blit(numbers[0], (370, 60))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                if flag_1 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[1]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 60))
-                if flag_2:
-                    screen.blit(numbers[1], (370, 110))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_1 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[1]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 60))
+                elif not end_move:
+                    screen.blit(numbers[0], (370, 60))
+                if flag_2 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[2]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 110))
-                if flag_3:
-                    screen.blit(numbers[2], (370, 150))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_2 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[2]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 110))
+                elif not end_move:
+                    screen.blit(numbers[1], (370, 110))
+                if flag_3 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[3]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 150))
-                if flag_4:
-                    screen.blit(numbers[3], (370, 200))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_3 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[3]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 150))
+                elif not end_move:
+                    screen.blit(numbers[2], (370, 150))
+                if flag_4 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[4]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 200))
-                if flag_5:
-                    screen.blit(numbers[4], (370, 240))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_4 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[4]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 200))
+                elif not end_move:
+                    screen.blit(numbers[3], (370, 200))
+                if flag_5 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[5]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 240))
-                if flag_6:
-                    screen.blit(numbers[5], (370, 285))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_5 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[5]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 240))
+                elif not end_move:
+                    screen.blit(numbers[4], (370, 240))
+                if flag_6 == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[6]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (370, 285))
-                if flag_set:
-                    screen.blit(numbers[6], (630, 60))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_6 == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[6]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (370, 285))
+                elif not end_move:
+                    screen.blit(numbers[5], (370, 285))
+                if flag_set == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[7]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 60))
-                if flag_kare:
-                    screen.blit(numbers[7], (630, 110))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_set == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[7]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 60))
+                elif not end_move:
+                    screen.blit(numbers[6], (630, 60))
+                if flag_kare == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[8]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 110))
-                if flag_full_house:
-                    screen.blit(numbers[8], (630, 150))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_kare == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[8]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 110))
+                elif not end_move:
+                    screen.blit(numbers[7], (630, 110))
+                if flag_full_house == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[9]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 150))
-                if flag_low_street:
-                    screen.blit(numbers[9], (630, 200))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_full_house == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[9]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 150))
+                elif not end_move:
+                    screen.blit(numbers[8], (630, 150))
+                if flag_low_street == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[10]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 200))
-                if flag_big_street:
-                    screen.blit(numbers[10], (630, 240))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_low_street == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[10]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 200))
+                elif not end_move:
+                    screen.blit(numbers[9], (630, 200))
+                if flag_big_street == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[11]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 240))
-                if flag_yahta:
-                    screen.blit(numbers[11], (630, 285))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_big_street == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[11]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 240))
+                elif not end_move:
+                    screen.blit(numbers[10], (630, 240))
+                if flag_yahta == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[12]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 285))
-                if flag_shans:
-                    screen.blit(numbers[12], (630, 325))
-                else:
-                    s_pic_red = pygame.font.Font(None, 48)
+                elif flag_yahta == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[12]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 285))
+                elif not end_move:
+                    screen.blit(numbers[11], (630, 285))
+                if flag_shans == 'red':
                     s_pic_red__ = s_pic_red.render(str(numbers_sl[13]), True, pygame.Color((255, 0, 0)))
                     screen.blit(s_pic_red__, (630, 325))
+                elif flag_shans == 'yellow':
+                    s_pic_red__ = s_pic_red.render(str(numbers_sl[13]), True, pygame.Color((255, 255, 0)))
+                    screen.blit(s_pic_red__, (630, 325))
+                elif not end_move:
+                    screen.blit(numbers[12], (630, 325))
             pygame.display.update()
             pygame.display.flip()
     pygame.quit()
