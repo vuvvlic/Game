@@ -45,6 +45,7 @@ current_point = None
 
 
 def poker(llist):
+    flag_set_fun = True
     num_1 = llist.count(1) * 1
     num_2 = llist.count(2) * 2
     num_3 = llist.count(3) * 3
@@ -59,16 +60,25 @@ def poker(llist):
         if llist.count(llist[0]) in [2, 3]:
             full_house = 25
             kare = 0
+            three = 21
         else:
             kare = 23
             full_house = 0
+            three = 21
+        flag_set_fun = False
     else:
         full_house = 0
         kare = 0
-    if len(set(llist[:])) == 3:
-        three = 21
-    else:
         three = 0
+    if len(set(llist[:])) == 3 and flag_set_fun:
+        set__ = []
+        for i in set(llist[:]):
+            set__.append(llist.count(i))
+        set__.sort()
+        if set__ == [1, 1, 3]:
+            three = 21
+        else:
+            three = 0
     if len(set(llist[:])) == 4:
         low_street = 30
     else:
