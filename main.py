@@ -119,8 +119,8 @@ class ChekingTheCoordinates:
         self.kubiki = ChekingTheCoordinates.last_cubes
 
     def check_flag(self):
-        global flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta
-        global flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6
+        global flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta, flag_full_house, flag_kare, \
+            flag_set, flag_2, flag_3, flag_5, flag_6
         if flag_1 != 'yellow':
             flag_1 = True
         if flag_2 != 'yellow':
@@ -149,22 +149,8 @@ class ChekingTheCoordinates:
             flag_shans = True
 
     def check(self):
-        global playing_numbers
-        global flag_1
-        global flag_2
-        global flag_3
-        global flag_4
-        global flag_5
-        global flag_6
-        global flag_set
-        global flag_kare
-        global flag_full_house
-        global flag_big_street
-        global flag_low_street
-        global flag_yahta
-        global flag_shans
-        global count_move
-        global current_point
+        global playing_numbers, flag_1, flag_2, flag_3, flag_4, flag_5, flag_6, flag_set, flag_kare, flag_full_house,\
+            flag_low_street, flag_big_street, flag_yahta, flag_shans, count_move, current_point, hod_play
         if self.x in range(753, 878) and self.y in range(503, 631):
             count_move -= 1
             if count_move >= 0:
@@ -173,6 +159,8 @@ class ChekingTheCoordinates:
         elif self.x in range(730, 890) and self.y in range(400, 482) and current_point:
             count_move = 3
             return 'play'
+        elif self.x in range(20, 133) and self.y in range(39, 136):
+            return "end"
         elif self.x in range(5, 145) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
             self.locks_cube(0)
             return self.kubiki
@@ -269,9 +257,9 @@ class ChekingTheCoordinates:
         return None
 
 
-def playing_vuvvlic():
-    global playing_numbers, numbers_sl, flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta
-    global hod_play, flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6, count_move, current_point
+def playing_vuvvlic(win_point):
+    global playing_numbers, numbers_sl, flag_low_street, flag_big_street, flag_4, flag_1, flag_shans, flag_yahta, \
+        hod_play, flag_full_house, flag_kare, flag_set, flag_2, flag_3, flag_5, flag_6, count_move, current_point
     flag_1 = True
     flag_2 = True
     flag_3 = True
@@ -313,7 +301,7 @@ def playing_vuvvlic():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                return "end"
             if event.type == pygame.MOUSEBUTTONDOWN:
                 play = ChekingTheCoordinates(event.pos[0], event.pos[1])
                 kubs = play.check()
@@ -381,11 +369,20 @@ def playing_vuvvlic():
                     izob1 = pygame.font.Font(None, 48)
                     text__1 = izob1.render(f'{total}', True, pygame.Color((0, 0, 0)))  # изображение счета цифра
                     screen.blit(text__1, (810, 80))
+                    izob3 = pygame.font.Font(None, 48)
+                    text__2 = izob3.render('Необходимо:', True, pygame.Color((0, 0, 0)))  # изображение счета
+                    screen.blit(text__2, (675, 130))
+                    izob4 = pygame.font.Font(None, 48)
+                    text__3 = izob4.render(f'{win_point}', True, pygame.Color((0, 0, 0)))  # изображение счета цифра
+                    screen.blit(text__3, (810, 160))
                 elif kubs == 'select':
                     numbers_sl[current_point[1]] = current_point[0]
+                elif kubs == "end":
+                    return "end"
 
             picture1 = pygame.image.load("data/pole_one.png")
             picture2 = pygame.image.load("data/pole_two.png")
+            exit_pic = pygame.image.load("data/exit.png")
             # делаю повторно потому что чтоб счет изображения сохранялся
             izob = pygame.font.Font(None, 48)
             text__ = izob.render('Счёт:', True, pygame.Color((0, 0, 0)))
@@ -393,6 +390,12 @@ def playing_vuvvlic():
             izob1 = pygame.font.Font(None, 48)
             text__1 = izob1.render(f'{total}', True, pygame.Color((0, 0, 0)))
             screen.blit(text__1, (810, 80))
+            izob3 = pygame.font.Font(None, 48)
+            text__2 = izob3.render('Необходимо:', True, pygame.Color((0, 0, 0)))  # изображение счета
+            screen.blit(text__2, (675, 130))
+            izob4 = pygame.font.Font(None, 48)
+            text__3 = izob4.render(f'{win_point}', True, pygame.Color((0, 0, 0)))  # изображение счета цифра
+            screen.blit(text__3, (810, 160))
             if current_point is None:
                 play_button = pygame.image.load("data/lockplay.png")
                 screen.blit(play_button, (730, 400))
@@ -413,6 +416,7 @@ def playing_vuvvlic():
                 screen.blit(roll_the_dice, (750, 500))
             screen.blit(picture1, (155, 50))
             screen.blit(picture2, (413, 55))
+            screen.blit(exit_pic, (20, 40))
             s_pic_red = pygame.font.Font(None, 48)
             if numbers:
                 if flag_1 == 'red':
