@@ -160,6 +160,8 @@ class ChekingTheCoordinates:
             count_move = 3
             return 'play'
         elif self.x in range(20, 133) and self.y in range(39, 136):
+            playing_numbers = []
+            current_point = None
             return "end"
         elif self.x in range(5, 145) and self.y in range(503, 640) and ChekingTheCoordinates.last_cubes is not None:
             self.locks_cube(0)
