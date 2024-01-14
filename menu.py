@@ -1,12 +1,14 @@
-import sys
-import os
-import pygame
 import datetime
-from PyQt5.QtWidgets import QApplication, QTableWidgetItem
+import os
 import sqlite3
+import sys
+
+import pygame
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 
 from main import playing_vuvvlic
 from stats import MainWindow
+from combinations import combo
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -70,7 +72,7 @@ def show_info_on_table():
     con = sqlite3.connect('sql/database.db')
     cursor = con.cursor()
     data = con.execute(f"select count(*) from sqlite_master where type='table' "
-                            f"and name='solo'")
+                       f"and name='solo'")
     for i in data:
         if i[0] != 0:
             cursor.execute(f'SELECT * FROM solo')
@@ -80,7 +82,7 @@ def show_info_on_table():
                 for column in range(5):  # левел, счёт, необходимо, пройдено, дата
                     main_window.tableWidget.setItem(row, column, QTableWidgetItem(entry[column + 1]))
         else:
-           main_window.tableWidget.setRowCount(0)
+            main_window.tableWidget.setRowCount(0)
 
 
 def start_window():
@@ -149,7 +151,7 @@ def start_window():
             screen.blit(text1, (70, 60))
 
             pygame.draw.rect(screen, black, button2)
-            text2 = pygame.font.Font(None, 30).render('Игра на двоих', True, white)
+            text2 = pygame.font.Font(None, 30).render('Комбинации', True, white)
             screen.blit(text2, (70, 160))
 
             pygame.draw.rect(screen, black, button3)
@@ -169,7 +171,8 @@ def start_window():
                 if button1.collidepoint(mousepos):
                     flag = True
                 elif button2.collidepoint(mousepos):
-                    pass
+                    combo()
+                    screen = pygame.display.set_mode(size)
                 elif button3.collidepoint(mousepos):
                     flag = 'stats'
             if event.type == pygame.MOUSEBUTTONDOWN and flag and not flag_end:
