@@ -90,6 +90,7 @@ def start_window():
     pygame.init()
     size = width, height = 700, 500
     screen = pygame.display.set_mode(size)
+    pygame.display.set_caption('Покер на костях')
     screen.fill((150, 100, 0))
     button1 = pygame.Rect(50, 50, 200, 50)
     button2 = pygame.Rect(50, 150, 200, 50)
@@ -157,6 +158,10 @@ def start_window():
             pygame.draw.rect(screen, black, button3)
             text3 = pygame.font.Font(None, 30).render('Статистика', True, white)
             screen.blit(text3, (70, 260))
+
+            pic = pygame.image.load('data/orig.jpg')
+            screen.blit(pic, (300, 65))
+
             if flag == 'stats':
                 flag = False
                 main_window.show()

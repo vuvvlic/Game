@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QHeaderView
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 
 
 class MainWindow(QMainWindow):
