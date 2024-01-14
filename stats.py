@@ -11,8 +11,6 @@ class MainWindow(QMainWindow):
         self.note_deleteAction = None
         self.current_row = None
         uic.loadUi('sql/stats_window.ui', self)
-        self.con = sqlite3.connect('sql/database.db')
-        self.cur = self.con.cursor()
         self.tableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
         self.tableWidget.cellClicked.connect(self.on_note_view_click)
         self.tableWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -38,9 +36,12 @@ class MainWindow(QMainWindow):
 
     def delete_note(self):
         self.tableWidget.removeRow(self.current_row)
-        self.cur.execute(f"DELETE FROM solo WHERE id = {self.current_row + 1}")
-        self.cur.execute(f"UPDATE solo SET id = id - 1 WHERE id > {self.current_row + 1}")
-        self.con.commit()
+        con = sqlite3.connect('sql/database.db')
+        cur = con.cursor()
+        cur.execute(f"DELETE FROM solo WHERE id = {self.current_row + 1}")
+        cur.execute(f"UPDATE solo SET id = id - 1 WHERE id > {self.current_row + 1}")
+        con.commit()
+        con.close()
 
 
 if __name__ == '__main__':
